@@ -1,0 +1,90 @@
+COPYRIGHT 2017, KALEB WASMUTH
+
+Please read the provided LICENSE for more information on your rights of usage for this program.
+
+SimpleHG requires a few things to be prepared before you are able to start your first game.
+It is suggested that you get familiar with config.yml which can be found in the SimpleHG/resources
+folder after installing the plugin.  You can also find it on the GitHub page 
+
+https://github.com/kaleb418/SimpleHG
+
+Step 1 - Install the Plugin
+    Move the SimpleHG.phar file into your /plugins directory and start/restart the server.
+	Check that the plugin was loaded and enabled.  Please note that trying to start a game
+	at this point will cause the plugin to fail.  On first load, a SimpleHG folder should
+	be created in the plugins folder.
+	
+Step 2 - Prepare your Arena
+	Your arena can be in any world that you have on your server.  It will be important to
+	know several of the coordinates associated with the arena and the world name where the
+	arena is located.  Coordinates can contain decimal values (eg. [120.41, 71, 530.22]).
+	
+	When creating your arena, you need to dedicate specific locations for players to spawn.
+	As of this writing, players will take spawn locations in the order they are listed in
+	the config.yml file.
+	
+	Your arena will need at least one chest to hold event items (eg. weapons, armor, food).
+	It will be important that you have the coordinates for each chest that you wish to
+	populate at the beginning of each game.
+	
+	Finally, you need a deathmatch location.  This is a single location where all remaining
+	players will be teleported after a set amount of time.
+	
+	Aside from the things that were previously listed, you can build your arena as you see
+	fit.  Once you have your arena prepared and you know the world name, coordinates for the 
+	spawn locations, arena chests, and Deathmatch location, you need to update the config.yml
+	file.
+	
+Step 3 - Updating config.yml
+	You will need to edit the config.yml file before starting your first game.  There are
+	several options here to help you host a great event.  To get your first game underway
+	update the world: "world" line to match the name of the world where your arena is
+	located.  For example, if your world name is YourArena then you would update the line
+	to look like this:
+	
+		world: "YourArena"
+	
+	Please note that this name is not the name of the folder where the world is located.
+	Next you need to set max-players to be the same number of spawn points you created in
+	your arena.  So if your arena has 12 spawn points then:
+	
+		max-players: 12
+	
+	Next, you need to update the spawn-coords with the coordinates you have chosen for each
+	player.  It is important that each set of coordinates be contained in square brackets [].
+	A comma is necessary after each set of coordinates except the last set. An example set:
+	
+		spawn-coords: [
+			[123.45, 67, 89.10],
+			[10.98, 76, 543.21],
+			[345.22, 67, 99.10],
+			[100.10, 78, 345.11],
+			[45, 77, 195],
+			[324, 76, 545.78]
+		]
+	
+	The chest-coords needs to be populated the same way that spawn coordinates were.  Pay
+	special attention to the brackets and commas.
+	
+	Finally, update the deathmatch-coords to your selected spawn point.
+	
+		deathmatch-coords: [100.10, 78, 345.11]
+	
+	
+Step 4 - Move config.yml and Restart the Server
+	The config.yml file needs to be saved in plugins/SimpleHG instead of plugins/SimpleHG/resources.
+	You may find it helpful to keep the original config.yml in the resources folder and just save
+	the updated file directly in plugins/SimpleHG.  Once the file has been relocated, the server must
+	be restarted (not reloaded) for the changes to take effect.
+	
+	Once your server has restarted test your settings by typing starthg in the console or /starthg in
+	the chat window of someone with OP status.  Join the match by typing /joinhg in the chat window
+	and have someone else join with you.  The game starts 60 seconds after the starthg command is sent.
+	
+	If all was well with your settings, you should be teleported to the arena during the countdown. If
+	this doesn't happen, check your console for errors, make appropriate changes, and try again.
+	
+
+Hopefully your first match went as expected and you now have a working arena. As you get a feel for
+things, you should update your config.yml file to modify things for a personalized match.  Check the
+comments in the config.yml file for more information about each option.
