@@ -637,7 +637,7 @@ class Main extends PluginBase implements Listener{
         }
     }
     
-    public function onCommand(CommandSender $sender, Command $command, $label, array $args){
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         $commandName = $command->getName();
         if($commandName === 'starthg'){
             if(count($args) !== 0){
