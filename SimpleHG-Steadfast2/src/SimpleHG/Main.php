@@ -50,60 +50,63 @@ use pocketmine\Player;
 use pocketmine\level\Position;
 
 use pocketmine\math\Vector3;
+use pocketmine\utils\TextFormat;
 
 use SimpleHG\Tasks\GameTimer;
 
 // TODO: Allow commands to configure
 
-class Main extends PluginBase implements Listener{
-    public function onLoad(){
-        if(!is_dir("./plugins/SimpleHG")){
-            mkdir("./plugins/SimpleHG");
+class Main extends PluginBase implements Listener {
+
+    public $cfg;
+
+    public function onLoad() {
+        @mkdir($this->getDataFolder());
+
+        if (!file_exists($this->getDataFolder() . "signs.json")) {
+            $this->saveResource("signs.json");
+            // touch($this->getDataFolder() . "signs.json");
+            $jsonFile = fopen($this->getDataFolder() . "signs.json", "w");
+            fwrite($jsonFile, "{\"signs\":[]}");
+            fclose($jsonFile);
         }
-        
-        if(!file_exists("./plugins/SimpleHG/signs.json")){
-            touch("./plugins/SimpleHG/signs.json");
-            $JSONFile = fopen("./plugins/SimpleHG/signs.json", "w");
-            fwrite($JSONFile, "{\"signs\":[]}");
-            fclose($JSONFile);
-        }
-        
-        $this->getLogger()->info("§eLoaded SimpleHG v{$this->getDescription()->getVersion()}§r");
+
+        // $this->getLogger()->info("Loaded SimpleHG v" . $this->getDescription()->getVersion());
     }
-    
-    public function onEnable(){
-        
+
+    public function onEnable() {
         $this->cfg = $this->getConfig();
-        if($this->cfg->get("enabled") == false){
+        if ($this->cfg->get("enabled") == false) {
             $this->setEnabled(false);
             return;
         }
-        
+
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getLogger()->info("§aEnabled SimpleHG v{$this->getDescription()->getVersion()}§r");
-        
+        $this->getLogger()->info(TextFormat::GREEN . "Enabled SimpleHG v" . $this->getDescription()->getVersion());
+
         $this->gameRunning = false;
         $this->playersInGame = [];
         $this->filledSpawns = [];
         $this->gameTask = null;
-        
-        $fileContents = file_get_contents("./plugins/SimpleHG/signs.json");
+
+        $fileContents = file_get_contents($this->getDataFolder() . "signs.json");
         $arrayData = json_decode($fileContents, true);
         $this->data = $arrayData;
         $this->signs = $arrayData["signs"];
-        
+
         $signBlockList = [];
-        foreach($this->signs as $s){
+        foreach ($this->signs as $s) {
             $level = $this->getServer()->getLevelByName($s[3]);
             array_push($signBlockList, $level->getTile(new Vector3($s[0], $s[1], $s[2])));
         }
-        
-        foreach($signBlockList as $b){
+
+        foreach ($signBlockList as $b) {
             $lines = $b->getText();
-            $b->setText($lines[0], $lines[1], "§a0/{$this->cfg->get("max-players")}§r", $lines[3]);
+            $b->setText($lines[0], $lines[1], TextFormat::GREEN . "0/" . $this->cfg->get("max-players"), $lines[3]);
         }
     }
-    
+
+    // TODO
     public function onDisable(){
         $this->getLogger()->info("§cDisabled SimpleHG v{$this->getDescription()->getVersion()}§r");
         
